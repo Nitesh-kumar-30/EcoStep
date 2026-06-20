@@ -6,7 +6,7 @@ const router = express.Router();
 
 // @route   GET /api/actions/challenges
 // @desc    Get all daily challenges and which ones are completed by the user today
-router.get('/challenges', authMiddleware, async (req, res) => {
+router.get('/challenges', authMiddleware, async (req, res, next) => {
   try {
     const allChallenges = await DB.challenges.getAll();
     const completedToday = await DB.challenges.getCompletedToday(req.user.id);
@@ -19,14 +19,13 @@ router.get('/challenges', authMiddleware, async (req, res) => {
 
     res.json(challenges);
   } catch (err) {
-    console.error('Fetch challenges error:', err);
-    res.status(500).json({ message: 'Server error fetching challenges.' });
+    next(err);
   }
 });
 
 // @route   POST /api/actions/challenges/:id/complete
 // @desc    Complete a daily challenge and award eco-points
-router.post('/challenges/:id/complete', authMiddleware, async (req, res) => {
+router.post('/challenges/:id/complete', authMiddleware, async (req, res, next) => {
   try {
     const challengeId = req.params.id;
     const allChallenges = await DB.challenges.getAll();
@@ -52,14 +51,13 @@ router.post('/challenges/:id/complete', authMiddleware, async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Complete challenge error:', err);
-    res.status(500).json({ message: 'Server error completing challenge.' });
+    next(err);
   }
 });
 
 // @route   POST /api/actions/plant-tree
 // @desc    Plant a tree by exchanging 100 eco-points
-router.post('/plant-tree', authMiddleware, async (req, res) => {
+router.post('/plant-tree', authMiddleware, async (req, res, next) => {
   try {
     const user = await DB.users.findById(req.user.id);
     if (!user) {
@@ -77,7 +75,7 @@ router.post('/plant-tree', authMiddleware, async (req, res) => {
     await DB.posts.create(
       'Green Initiative',
       `🌱 Shoutout to @${user.username} for planting a virtual tree! Let's build a greener future together!`,
-      1 // Dummy points to avoid blank
+      1
     );
 
     res.json({
@@ -90,8 +88,7 @@ router.post('/plant-tree', authMiddleware, async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Plant tree error:', err);
-    res.status(500).json({ message: 'Server error planting tree.' });
+    next(err);
   }
 });
 

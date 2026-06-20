@@ -3,20 +3,29 @@ import { AppProvider, useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import Chatbot from './components/Chatbot';
 
-// Page Imports
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Calculator from './pages/Calculator';
-import Dashboard from './pages/Dashboard';
-import ActionCenter from './pages/ActionCenter';
-import Goals from './pages/Goals';
-import Education from './pages/Education';
-import Community from './pages/Community';
-import AboutUs from './pages/AboutUs';
+// Page Lazy Imports for Code Splitting and Performance Optimization
+const Home = React.lazy(() => import('./pages/Home'));
+const Login = React.lazy(() => import('./pages/Login'));
+const Register = React.lazy(() => import('./pages/Register'));
+const Calculator = React.lazy(() => import('./pages/Calculator'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const ActionCenter = React.lazy(() => import('./pages/ActionCenter'));
+const Goals = React.lazy(() => import('./pages/Goals'));
+const Education = React.lazy(() => import('./pages/Education'));
+const Community = React.lazy(() => import('./pages/Community'));
+const AboutUs = React.lazy(() => import('./pages/AboutUs'));
 
-// Icon for Alerts
+// Icons for Alerts
 import { AlertCircle, CheckCircle, Info } from 'lucide-react';
+
+const PageLoader = () => (
+  <div className="w-full min-h-[400px] flex flex-col justify-center items-center gap-3">
+    <div className="h-10 w-10 border-4 border-eco-500 border-t-transparent rounded-full animate-spin"></div>
+    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider animate-pulse">
+      Loading EcoStep...
+    </span>
+  </div>
+);
 
 const AppContent = () => {
   const { activeTab, alert } = useApp();
@@ -51,6 +60,14 @@ const AppContent = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
+      {/* Skip to main content link for keyboard/screen-readers bypass */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[999] focus:top-4 focus:left-4 focus:bg-eco-500 focus:text-white focus:px-4 focus:py-2.5 focus:rounded-xl focus:shadow-lg focus:font-bold focus:outline-none"
+      >
+        Skip to Main Content
+      </a>
+
       {/* Alert Notifications */}
       {alert && (
         <div className="fixed top-20 right-4 sm:right-6 z-[100] max-w-sm w-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 p-4 animate-slide-up flex gap-3 items-start">
@@ -74,9 +91,11 @@ const AppContent = () => {
       {/* Navigation Header */}
       <Navbar />
 
-      {/* Main Pages Container */}
-      <main className="flex-grow">
-        {renderPage()}
+      {/* Main Pages Container with Suspense Fallback Loader */}
+      <main id="main-content" className="flex-grow" tabIndex="-1">
+        <React.Suspense fallback={<PageLoader />}>
+          {renderPage()}
+        </React.Suspense>
       </main>
 
       {/* Chatbot floating widget */}

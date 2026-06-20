@@ -1,19 +1,37 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { DB } from '../database.js';
 import authMiddleware from '../middleware/auth.js';
+import { AuthService } from '../services/authService.js';
 
 const router = express.Router();
 
+// Basic email validation regex
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 // @route   POST /api/auth/register
 // @desc    Register a new user
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
 
     if (!username || !email || !password) {
       return res.status(400).json({ message: 'Please enter all fields.' });
+    }
+
+    // Input validations
+    if (username.trim().length < 3) {
+      return res.status(400).json({ message: 'Username must be at least 3 characters long.' });
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      return res.status(400).json({ message: 'Please enter a valid email address.' });
+    }
+
+    // Delegate password strength evaluation to AuthService
+    const passwordValidation = AuthService.validatePassword(password);
+    if (!passwordValidation.isValid) {
+      return res.status(400).json({ message: passwordValidation.message });
     }
 
     // Check if user already exists
@@ -22,23 +40,19 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'User already exists with this email.' });
     }
 
-    // Hash Password
-    const salt = await bcrypt.genSalt(10);
+    // Hash Password with high-round salt
+    const salt = await bcrypt.genSalt(12); // High rounds for security
     const passwordHash = await bcrypt.hash(password, salt);
 
     // Create User
     const newUser = await DB.users.create({
-      username,
-      email: email.toLowerCase(),
+      username: username.trim(),
+      email: email.toLowerCase().trim(),
       password: passwordHash,
     });
 
-    // Sign Token
-    const token = jwt.sign(
-      { id: newUser._id, username: newUser.username },
-      process.env.JWT_SECRET || 'super_secret_eco_key_123',
-      { expiresIn: '7d' }
-    );
+    // Delegate token signing to AuthService
+    const token = AuthService.signToken(newUser._id, newUser.username);
 
     res.status(201).json({
       token,
@@ -52,19 +66,22 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Register error:', err);
-    res.status(500).json({ message: 'Server error during registration.' });
+    next(err); // Centralized error handling
   }
 });
 
 // @route   POST /api/auth/login
 // @desc    Login existing user
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
       return res.status(400).json({ message: 'Please enter all fields.' });
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      return res.status(400).json({ message: 'Please enter a valid email address.' });
     }
 
     // Find User
@@ -79,12 +96,8 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials. Password incorrect.' });
     }
 
-    // Sign Token
-    const token = jwt.sign(
-      { id: user._id, username: user.username },
-      process.env.JWT_SECRET || 'super_secret_eco_key_123',
-      { expiresIn: '7d' }
-    );
+    // Delegate token signing to AuthService
+    const token = AuthService.signToken(user._id, user.username);
 
     res.json({
       token,
@@ -98,14 +111,13 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Login error:', err);
-    res.status(500).json({ message: 'Server error during login.' });
+    next(err);
   }
 });
 
 // @route   GET /api/auth/me
 // @desc    Get current user details
-router.get('/me', authMiddleware, async (req, res) => {
+router.get('/me', authMiddleware, async (req, res, next) => {
   try {
     const user = await DB.users.findById(req.user.id);
     if (!user) {
@@ -120,8 +132,7 @@ router.get('/me', authMiddleware, async (req, res) => {
       treesPlanted: user.treesPlanted,
     });
   } catch (err) {
-    console.error('Get user details error:', err);
-    res.status(500).json({ message: 'Server error fetching user.' });
+    next(err);
   }
 });
 

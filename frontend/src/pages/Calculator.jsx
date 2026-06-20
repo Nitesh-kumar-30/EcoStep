@@ -27,6 +27,13 @@ const Calculator = () => {
   const [liveEmissions, setLiveEmissions] = useState(0);
   const [breakdown, setBreakdown] = useState({ transport: 0, energy: 0, food: 0, waste: 0 });
 
+  const handleKeyDown = (e, habitId) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setFoodHabit(habitId);
+    }
+  };
+
   // Calculate live footprint whenever variables change
   useEffect(() => {
     // 1. Transport
@@ -160,7 +167,8 @@ const Calculator = () => {
                       type="range" min="0" max="800" step="10"
                       value={car}
                       onChange={(e) => setCar(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Car travel distance in kilometers per week"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
 
@@ -174,7 +182,8 @@ const Calculator = () => {
                       type="range" min="0" max="600" step="10"
                       value={publicTransport}
                       onChange={(e) => setPublicTransport(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Public transit travel distance in kilometers per week"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
 
@@ -188,7 +197,8 @@ const Calculator = () => {
                       type="range" min="0" max="100" step="2"
                       value={flights}
                       onChange={(e) => setFlights(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Annual flights duration in hours"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
 
@@ -202,7 +212,8 @@ const Calculator = () => {
                       type="range" min="0" max="150" step="5"
                       value={bike}
                       onChange={(e) => setBike(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Bicycle or walking commute distance in kilometers per week"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
                 </div>
@@ -212,7 +223,7 @@ const Calculator = () => {
               {currentStep === 2 && (
                 <div className="space-y-6 animate-slide-up">
                   <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                    <Zap className="h-6 w-6 text-eco-600" />
+                    <Zap className="h-6 w-6 text-eco-600" aria-hidden="true" />
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Household Electricity</h3>
                   </div>
 
@@ -225,7 +236,8 @@ const Calculator = () => {
                       type="range" min="0" max="1200" step="10"
                       value={electricity}
                       onChange={(e) => setElectricity(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Monthly electricity usage in kilowatt hours"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
 
@@ -241,11 +253,11 @@ const Calculator = () => {
               {currentStep === 3 && (
                 <div className="space-y-6 animate-slide-up">
                   <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                    <Apple className="h-6 w-6 text-eco-600" />
+                    <Apple className="h-6 w-6 text-eco-600" aria-hidden="true" />
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Dietary Habits</h3>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" role="radiogroup" aria-label="Diet habits selection">
                     {[
                       { id: 'vegan', title: 'Vegan', desc: 'No animal products. Super low impact.', points: '🌱 Low Impact' },
                       { id: 'vegetarian', title: 'Vegetarian', desc: 'No meat, includes eggs/dairy. Low footprint.', points: '🥚 Moderate-Low' },
@@ -255,7 +267,11 @@ const Calculator = () => {
                       <div
                         key={item.id}
                         onClick={() => setFoodHabit(item.id)}
-                        className={`cursor-pointer rounded-xl border p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200 ${
+                        onKeyDown={(e) => handleKeyDown(e, item.id)}
+                        tabIndex="0"
+                        role="radio"
+                        aria-checked={foodHabit === item.id}
+                        className={`cursor-pointer rounded-xl border p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-eco-500/40 ${
                           foodHabit === item.id
                             ? 'border-eco-500 bg-eco-50/30 dark:bg-eco-950/20'
                             : 'border-slate-200 dark:border-slate-850'
@@ -282,7 +298,7 @@ const Calculator = () => {
               {currentStep === 4 && (
                 <div className="space-y-6 animate-slide-up">
                   <div className="flex items-center gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
-                    <Trash2 className="h-6 w-6 text-eco-600" />
+                    <Trash2 className="h-6 w-6 text-eco-600" aria-hidden="true" />
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">Household Waste</h3>
                   </div>
 
@@ -296,7 +312,8 @@ const Calculator = () => {
                       type="range" min="1" max="80" step="1"
                       value={wasteGeneration}
                       onChange={(e) => setWasteGeneration(e.target.value)}
-                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500"
+                      aria-label="Weekly household trash generation in kilograms"
+                      className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-eco-500 focus:outline-none focus:ring-2 focus:ring-eco-550/40"
                     />
                   </div>
 
@@ -308,7 +325,9 @@ const Calculator = () => {
                     </div>
                     <button
                       onClick={() => setRecycled(!recycled)}
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
+                      aria-label="Active Recycling Toggle"
+                      aria-pressed={recycled}
+                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-eco-500/40 ${
                         recycled ? 'bg-eco-500' : 'bg-slate-250 dark:bg-slate-800'
                       }`}
                     >

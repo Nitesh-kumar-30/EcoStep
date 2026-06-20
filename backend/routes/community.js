@@ -6,31 +6,29 @@ const router = express.Router();
 
 // @route   GET /api/community/leaderboard
 // @desc    Get top users sorted by eco-points
-router.get('/leaderboard', async (req, res) => {
+router.get('/leaderboard', async (req, res, next) => {
   try {
     const leaderboard = await DB.users.getLeaderboard();
     res.json(leaderboard);
   } catch (err) {
-    console.error('Fetch leaderboard error:', err);
-    res.status(500).json({ message: 'Server error fetching leaderboard.' });
+    next(err);
   }
 });
 
 // @route   GET /api/community/posts
 // @desc    Get all community chat/feed posts
-router.get('/posts', async (req, res) => {
+router.get('/posts', async (req, res, next) => {
   try {
     const posts = await DB.posts.getAll();
     res.json(posts);
   } catch (err) {
-    console.error('Fetch posts error:', err);
-    res.status(500).json({ message: 'Server error fetching posts.' });
+    next(err);
   }
 });
 
 // @route   POST /api/community/posts
 // @desc    Create a new community post
-router.post('/posts', authMiddleware, async (req, res) => {
+router.post('/posts', authMiddleware, async (req, res, next) => {
   try {
     const { content } = req.body;
 
@@ -47,14 +45,13 @@ router.post('/posts', authMiddleware, async (req, res) => {
 
     res.status(201).json(newPost);
   } catch (err) {
-    console.error('Create post error:', err);
-    res.status(500).json({ message: 'Server error creating community post.' });
+    next(err);
   }
 });
 
 // @route   POST /api/community/posts/:id/like
 // @desc    Like or unlike a community post
-router.post('/posts/:id/like', authMiddleware, async (req, res) => {
+router.post('/posts/:id/like', authMiddleware, async (req, res, next) => {
   try {
     const postId = req.params.id;
     const post = await DB.posts.like(postId, req.user.id);
@@ -65,8 +62,7 @@ router.post('/posts/:id/like', authMiddleware, async (req, res) => {
 
     res.json(post);
   } catch (err) {
-    console.error('Like post error:', err);
-    res.status(500).json({ message: 'Server error liking community post.' });
+    next(err);
   }
 });
 

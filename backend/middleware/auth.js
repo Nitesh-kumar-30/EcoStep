@@ -1,5 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { config } from '../config/index.js';
 
+/**
+ * Authentication middleware verifying JWT tokens for API requests.
+ */
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -9,7 +13,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_eco_key_123');
+    const decoded = jwt.verify(token, config.jwtSecret);
     req.user = decoded; // Contains id and username
     next();
   } catch (err) {

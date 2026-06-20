@@ -1,7 +1,14 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import { config } from './config/index.js';
 import { dbConnect } from './database.js';
+
+// Import Security Middlewares
+import { 
+  securityHeaders, rateLimiter, sanitizeInput, 
+  preventNoSqlInjection, preventParameterPollution 
+} from './middleware/security.js';
+import errorHandler from './middleware/errorHandler.js';
 
 // Import Route Handlers
 import authRoutes from './routes/auth.js';
@@ -11,14 +18,26 @@ import goalsRoutes from './routes/goals.js';
 import communityRoutes from './routes/community.js';
 import chatRoutes from './routes/chat.js';
 
-dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = config.port;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// CORS configuration - only allow requests from trusted frontend client
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+);
+
+// Apply Security Headers & Rate Limiting
+app.use(securityHeaders);
+app.use(rateLimiter({ max: 300, windowMs: 15 * 60 * 1000 })); // Rate limiter for standard API routes
+app.use(express.json({ limit: '10kb' })); // Mitigate body parsing size attacks
+app.use(preventNoSqlInjection); // Strips NoSQL injection parameters
+app.use(preventParameterPollution); // Prevents HTTP Parameter Pollution (HPP)
+app.use(sanitizeInput); // Input sanitization middleware
 
 // Routes Mount
 app.use('/api/auth', authRoutes);
@@ -32,6 +51,9 @@ app.use('/api/chat', chatRoutes);
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', time: new Date() });
 });
+
+// Centralized error handling middleware
+app.use(errorHandler);
 
 // Run server after connecting to database
 const startServer = async () => {

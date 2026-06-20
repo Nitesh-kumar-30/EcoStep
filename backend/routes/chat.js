@@ -3,6 +3,21 @@ import authMiddleware from '../middleware/auth.js';
 
 const router = express.Router();
 
+// In-Memory cache for AI Chatbot responses (mitigates quota drainage and enhances efficiency)
+const chatCache = new Map();
+const MAX_CACHE_SIZE = 100;
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes Time-To-Live
+
+// Periodic garbage collection for expired entries
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, val] of chatCache.entries()) {
+    if (now > val.expiry) {
+      chatCache.delete(key);
+    }
+  }
+}, 600000); // Runs every 10 mins
+
 // Local Rule-Based fallback responder
 const getFallbackResponse = (query, username) => {
   const q = query.toLowerCase();
@@ -44,7 +59,7 @@ const getFallbackResponse = (query, username) => {
 
 // @route   POST /api/chat
 // @desc    Get AI sustainability guidance using Gemini API or rule-based fallback
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', authMiddleware, async (req, res, next) => {
   try {
     const { message } = req.body;
     const username = req.user.username;
@@ -53,12 +68,25 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'Chat message cannot be empty.' });
     }
 
+    const cleanMsg = message.trim();
+    // Cache key incorporates username to avoid cross-user response contamination
+    const cacheKey = `${username}_${cleanMsg.toLowerCase()}`;
+
+    // Check Cache first
+    if (chatCache.has(cacheKey)) {
+      const cached = chatCache.get(cacheKey);
+      if (Date.now() < cached.expiry) {
+        return res.json({ reply: cached.reply, source: 'cache' });
+      } else {
+        chatCache.delete(cacheKey);
+      }
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
 
     // Check if the key is default/placeholder or missing
     if (!apiKey || apiKey === 'your_api_key' || apiKey.startsWith('your_')) {
-      // Use fallback
-      const reply = getFallbackResponse(message, username);
+      const reply = getFallbackResponse(cleanMsg, username);
       return res.json({ reply, source: 'fallback' });
     }
 
@@ -94,7 +122,7 @@ If they ask about platform features, describe:
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       console.warn('Gemini API call failed, falling back to rule-based response. Error:', errorData);
-      const reply = getFallbackResponse(message, username);
+      const reply = getFallbackResponse(cleanMsg, username);
       return res.json({ reply, source: 'fallback-after-error' });
     }
 
@@ -102,21 +130,32 @@ If they ask about platform features, describe:
     
     if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
       const reply = data.candidates[0].content.parts[0].text;
+
+      // Save to Cache
+      if (chatCache.size >= MAX_CACHE_SIZE) {
+        // Evict oldest entry (Map keeps insertion order)
+        const oldestKey = chatCache.keys().next().value;
+        chatCache.delete(oldestKey);
+      }
+      chatCache.set(cacheKey, {
+        reply,
+        expiry: Date.now() + CACHE_TTL
+      });
+
       return res.json({ reply, source: 'gemini' });
     } else {
       console.warn('Invalid response structure from Gemini API, falling back.');
-      const reply = getFallbackResponse(message, username);
+      const reply = getFallbackResponse(cleanMsg, username);
       return res.json({ reply, source: 'fallback-invalid-structure' });
     }
 
   } catch (err) {
     console.error('Chat endpoint error:', err);
-    // Silent fallback to avoid breaking the UI
     try {
       const reply = getFallbackResponse(req.body.message, req.user?.username);
       res.json({ reply, source: 'fallback-catch-error' });
-    } catch {
-      res.status(500).json({ message: 'Server error handling chat.' });
+    } catch (fallbackErr) {
+      next(err); // Centralized error handling
     }
   }
 });

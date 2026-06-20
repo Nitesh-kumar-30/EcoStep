@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
+import { config } from './config/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,28 +83,44 @@ try {
 }
 
 // --- LOCAL JSON FILE DB FALLBACK ENGINE ---
+const dbCache = {};
+
 const getJsonFile = (filename) => {
+  if (dbCache[filename]) {
+    return dbCache[filename];
+  }
+
   const filePath = path.join(DATA_DIR, `${filename}.json`);
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify([], null, 2));
+    try {
+      fs.writeFileSync(filePath, JSON.stringify([], null, 2));
+    } catch (err) {
+      console.error(`Error initializing file ${filename}.json:`, err);
+    }
+    dbCache[filename] = [];
     return [];
   }
   try {
     const data = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    dbCache[filename] = parsed;
+    return parsed;
   } catch (err) {
     console.error(`Error reading database file ${filename}.json:`, err);
+    dbCache[filename] = [];
     return [];
   }
 };
 
 const saveJsonFile = (filename, data) => {
+  dbCache[filename] = data;
+
   const filePath = path.join(DATA_DIR, `${filename}.json`);
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.error(`Error writing database file ${filename}.json:`, err);
-  }
+  fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8', (err) => {
+    if (err) {
+      console.error(`Error writing database file ${filename}.json asynchronously:`, err);
+    }
+  });
 };
 
 // Seed initial default daily challenges if not present
@@ -125,7 +142,7 @@ seedChallenges();
 
 // --- EXPORTED DB INTERFACE ---
 export const dbConnect = async () => {
-  const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/carbon-footprint';
+  const mongoUri = config.mongoUri;
   console.log(`Connecting to MongoDB at: ${mongoUri}...`);
   try {
     mongoose.set('strictQuery', false);
