@@ -9,6 +9,7 @@ import calculatorRoutes from './routes/calculator.js';
 import actionsRoutes from './routes/actions.js';
 import goalsRoutes from './routes/goals.js';
 import communityRoutes from './routes/community.js';
+import chatRoutes from './routes/chat.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/calculator', calculatorRoutes);
 app.use('/api/actions', actionsRoutes);
 app.use('/api/goals', goalsRoutes);
 app.use('/api/community', communityRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

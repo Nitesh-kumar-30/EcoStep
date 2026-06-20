@@ -125,7 +125,7 @@ seedChallenges();
 
 // --- EXPORTED DB INTERFACE ---
 export const dbConnect = async () => {
-  const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/carbon-footprint';
+  const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/carbon-footprint';
   console.log(`Connecting to MongoDB at: ${mongoUri}...`);
   try {
     mongoose.set('strictQuery', false);

@@ -3,7 +3,7 @@ import { MessageSquare, X, Send, Leaf, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 const Chatbot = () => {
-  const { user } = useApp();
+  const { user, askChatbot } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
@@ -115,7 +115,7 @@ Achieving goals also awards a major +150 Eco-Points bonus! 🏆`;
 Would you like tips on **transportation**, **food**, **energy**, or **waste**? Just type the category! 🌍`;
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -126,20 +126,20 @@ Would you like tips on **transportation**, **food**, **energy**, or **waste**? J
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
 
-    // Simulate typing delay
-    setTimeout(() => {
-      const botReply = {
-        sender: 'bot',
-        text: getBotResponse(userMessage.text),
-        time: new Date()
-      };
-      setMessages(prev => [...prev, botReply]);
-    }, 600);
+    // Call API with fallback
+    const reply = await askChatbot(currentInput);
+    const botReply = {
+      sender: 'bot',
+      text: reply || getBotResponse(currentInput),
+      time: new Date()
+    };
+    setMessages(prev => [...prev, botReply]);
   };
 
-  const handleQuickReply = (text) => {
+  const handleQuickReply = async (text) => {
     const userMessage = {
       sender: 'user',
       text: text,
@@ -147,14 +147,14 @@ Would you like tips on **transportation**, **food**, **energy**, or **waste**? J
     };
     setMessages(prev => [...prev, userMessage]);
 
-    setTimeout(() => {
-      const botReply = {
-        sender: 'bot',
-        text: getBotResponse(text),
-        time: new Date()
-      };
-      setMessages(prev => [...prev, botReply]);
-    }, 600);
+    // Call API with fallback
+    const reply = await askChatbot(text);
+    const botReply = {
+      sender: 'bot',
+      text: reply || getBotResponse(text),
+      time: new Date()
+    };
+    setMessages(prev => [...prev, botReply]);
   };
 
   return (

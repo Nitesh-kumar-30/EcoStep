@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const AppContext = createContext();
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://ecostep-z008.onrender.com/api';
 
 export const AppProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -404,6 +404,23 @@ export const AppProvider = ({ children }) => {
     return false;
   };
 
+  const askChatbot = async (message) => {
+    try {
+      const res = await fetch(`${API_BASE}/chat`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ message })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.reply;
+      }
+    } catch (err) {
+      console.error('Chatbot API error:', err);
+    }
+    return null;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -432,6 +449,7 @@ export const AppProvider = ({ children }) => {
         plantTree,
         createPost,
         likePost,
+        askChatbot,
         fetchUserData
       }}
     >
