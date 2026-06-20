@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ch1",
+    "title": "Walk/Bike to work/school",
+    "description": "Swap a car trip with active transit today.",
+    "points": 15,
+    "category": "transport"
+  },
+  {
+    "id": "ch2",
+    "title": "Unplug Standby Appliances",
+    "description": "Unplug devices not in use to save phantom load.",
+    "points": 10,
+    "category": "energy"
+  },
+  {
+    "id": "ch3",
+    "title": "Meat-Free Day",
+    "description": "Eat entirely plant-based meals today.",
+    "points": 20,
+    "category": "food"
+  },
+  {
+    "id": "ch4",
+    "title": "Compost Waste",
+    "description": "Properly compost kitchen scraps instead of throwing them away.",
+    "points": 10,
+    "category": "waste"
+  },
+  {
+    "id": "ch5",
+    "title": "Zero Single-Use Plastics",
+    "description": "Use only reusable bags, bottles, and containers.",
+    "points": 15,
+    "category": "waste"
+  },
+  {
+    "id": "ch6",
+    "title": "Turn off lights in empty rooms",
+    "description": "Keep electricity usage to a minimum.",
+    "points": 10,
+    "category": "energy"
+  }
+]

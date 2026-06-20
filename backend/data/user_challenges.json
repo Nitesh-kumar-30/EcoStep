@@ -1,0 +1,302 @@
+[
+  {
+    "id": "3c10e22d-3336-4e90-812f-f1b9048bf2f2",
+    "userId": "6a34f2f2af9a7288a3b8201d",
+    "challengeId": "ch1",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "934343de-94f6-4cda-a096-4eb84ef6d946",
+    "userId": "6a34f2f2af9a7288a3b8201d",
+    "challengeId": "ch4",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "637c3e88-e5b9-4ed2-87ce-cb006b65c24f",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch2",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "8b3891bd-87b7-4404-aad1-760704916486",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch3",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "7f53a6ca-a519-44f2-bd48-267e725b2ba9",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch4",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "8db82f49-f3b1-4354-8505-35e486e80aa7",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch6",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "cd232f47-3da3-4e7c-b70c-beaf3a0a7d26",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch5",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "f3338d56-32bd-40f9-8b52-4334e5b633d0",
+    "userId": "6a34f38caf9a7288a3b82037",
+    "challengeId": "ch1",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "57d90dc2-630e-444b-aea5-096abc23cc06",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch1",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "da481f9f-ef87-4839-94bc-0ce4c7087064",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch4",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "b99ff940-7dc8-4912-9630-548d83d2a85f",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch3",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "ed4425b7-44d5-46ac-8a98-017949c8810c",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch6",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "78b8c23b-acba-42e9-a68b-fbb0f7173232",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch5",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "5cf27f17-41f8-484f-b203-537d03409c80",
+    "userId": "6a34f7e2af9a7288a3b8206a",
+    "challengeId": "ch2",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "4482f9c0-f548-4cd9-9452-340d9c3ef048",
+    "userId": "6a34f967af9a7288a3b82094",
+    "challengeId": "ch1",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "395d8772-af9f-4c22-8d65-87b5c67b053b",
+    "userId": "6a34f967af9a7288a3b82094",
+    "challengeId": "ch2",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "f2ddc1bd-daf7-463d-bda9-9fb35d146288",
+    "userId": "6a34f967af9a7288a3b82094",
+    "challengeId": "ch3",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "0e1f022b-bbb1-44cf-8415-805bd2ed8631",
+    "userId": "6a34f967af9a7288a3b82094",
+    "challengeId": "ch4",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "89af8055-76d1-4ebb-af92-b55536198434",
+    "userId": "6a34f967af9a7288a3b82094",
+    "challengeId": "ch5",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "bf5ec0da-e349-4f96-a7ad-909b9a2864b1",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch1",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "d38d4404-e245-46f5-890b-3c307468ca78",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch2",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "0f96dda7-48ff-41e1-bce5-eb65ba3cac64",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch3",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "572f5c44-8656-43ab-8920-2aa69fde20e6",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch4",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "c4acfeaf-950f-4ffe-ad03-be6a6a085b93",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch5",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "46662b67-6265-40a1-aba4-a1893d8da510",
+    "userId": "6a34facaaf9a7288a3b820c3",
+    "challengeId": "ch6",
+    "date": "2026-06-19"
+  },
+  {
+    "id": "4c93c294-c5db-48a0-bbe3-9bc39af6f44d",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch1",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "2fbc0717-6c02-439b-80dd-34f9212263f0",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch2",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "38982f9c-9a8f-411f-91e0-d1a7aab95c74",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch3",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "01a03463-cdeb-4ee0-a7e8-a617a81367ed",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch5",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "263c1103-ea78-4c8a-80f5-05652d5a1d9a",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch6",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "f91dbbb0-5b23-494b-a910-a7f81124c464",
+    "userId": "6a362bd93366f1484f9ac620",
+    "challengeId": "ch4",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "b0e1a8a0-9c86-4003-85a1-eb584528505c",
+    "userId": "6a362e693366f1484f9ac64f",
+    "challengeId": "ch1",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "afc791e7-c6b5-45af-a55a-f356bbd44500",
+    "userId": "6a362e693366f1484f9ac64f",
+    "challengeId": "ch2",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "b1c3c0b2-ec2b-4ee8-af0d-e6c57d7ce035",
+    "userId": "6a362e693366f1484f9ac64f",
+    "challengeId": "ch3",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "2d0b3e7c-ec04-49dd-b7bd-2afc79b8a059",
+    "userId": "6a362e693366f1484f9ac64f",
+    "challengeId": "ch4",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "22917994-9b97-4f08-91ba-d328fbb56be0",
+    "userId": "6a362f6a3366f1484f9ac674",
+    "challengeId": "ch1",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "28d7c3cf-f212-48d4-859e-8749fef618aa",
+    "userId": "6a362f6a3366f1484f9ac674",
+    "challengeId": "ch2",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "8429d97e-1301-4324-bf84-7ae2114f96c9",
+    "userId": "6a362f6a3366f1484f9ac674",
+    "challengeId": "ch4",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "bfc2168a-c905-4b24-adb9-03d11981bd6e",
+    "userId": "6a362f6a3366f1484f9ac674",
+    "challengeId": "ch5",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "9fa212de-9d3c-4a6f-a37b-daff4db3c9e0",
+    "userId": "6a362f6a3366f1484f9ac674",
+    "challengeId": "ch3",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "f4a8cc79-111f-42c3-ad04-192a5d783621",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch1",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "382395fe-f39a-4bdb-bd51-a3df25317656",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch2",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "56a90fec-dbf8-42e4-9c84-68f013d1b168",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch4",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "6877f111-20de-4420-9be5-fb73e1df1172",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch3",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "70351aa9-23e7-4714-adc9-1e1212cdf33d",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch5",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "007ea42b-7762-423b-8d46-df90c83cbce2",
+    "userId": "6a3631513366f1484f9ac69b",
+    "challengeId": "ch6",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "742c0cf0-2223-4ace-a0e9-139e9a417cb8",
+    "userId": "6a3632ec3366f1484f9ac6d2",
+    "challengeId": "ch1",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "c25ec1a4-a7cc-46e3-8b36-1c3178f0ed66",
+    "userId": "6a3632ec3366f1484f9ac6d2",
+    "challengeId": "ch3",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "45373e68-9772-4fa1-941a-bc963284f887",
+    "userId": "6a3632ec3366f1484f9ac6d2",
+    "challengeId": "ch5",
+    "date": "2026-06-20"
+  },
+  {
+    "id": "53028909-0fe8-4302-b90a-126d2d62e058",
+    "userId": "6a3632ec3366f1484f9ac6d2",
+    "challengeId": "ch2",
+    "date": "2026-06-20"
+  }
+]
